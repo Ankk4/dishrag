@@ -24,4 +24,4 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=5 \
   CMD php -r '$socket = @fsockopen("127.0.0.1", 8000); if (!$socket) { exit(1); } fclose($socket);'
 
-CMD ["sh", "-lc", "if [ ! -f vendor/autoload.php ]; then composer install --prefer-dist --no-interaction --no-progress --no-scripts; fi; php -S 0.0.0.0:8000 -t public"]
+CMD ["sh", "-lc", "if [ ! -f vendor/autoload.php ] || [ ! -f vendor/symfony/ux-react/src/ReactBundle.php ]; then composer install --prefer-dist --no-interaction --no-progress; fi; php -S 0.0.0.0:8000 -t public"]
