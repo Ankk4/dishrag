@@ -1,0 +1,16 @@
+services:
+  app:
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+      - app_vendor:/app/vendor
+
+###> doctrine/doctrine-bundle ###
+  database:
+    ports:
+      - "5432:5432"
+###< doctrine/doctrine-bundle ###
+
+volumes:
+  app_vendor:

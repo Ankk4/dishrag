@@ -1,0 +1,4 @@
+framework:
+    csrf_protection:
+        check_header: true
+

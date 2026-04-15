@@ -1,0 +1,11 @@
+.git
+.gitignore
+.idea
+.vscode
+var/
+vendor/
+node_modules/
+.env.local
+.env.*.local
+.env.test
+.env.prod

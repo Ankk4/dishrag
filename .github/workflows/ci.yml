@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    paths:
+      - "orchestrator/**"
+      - ".github/workflows/ci.yml"
+      - "README.md"
+  pull_request:
+    paths:
+      - "orchestrator/**"
+      - ".github/workflows/ci.yml"
+      - "README.md"
+
+jobs:
+  tests:
+    name: Symfony PHPUnit
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: orchestrator
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: app
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: "pazzzu"
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd "pg_isready -U app -d app"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      APP_ENV: test
+      APP_SECRET: ci-test-secret
+      DATABASE_URL: postgresql://app:pazzzu@127.0.0.1:5432/app?serverVersion=16&charset=utf8
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: pdo_pgsql
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: orchestrator/vendor
+          key: ${{ runner.os }}-php84-composer-${{ hashFiles('orchestrator/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php84-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Run PHPUnit
+        run: php vendor/bin/phpunit --configuration phpunit.dist.xml
