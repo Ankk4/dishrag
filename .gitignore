@@ -23,3 +23,5 @@ var/
 .env.dev
 
 data/
+
+todo.md

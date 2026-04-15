@@ -9,10 +9,11 @@ See [Plan.md](Plan.md) for the plan.
 ## Tech Stack
 
 - PHP / Symfony
+- postgres + pgvector
 - Docker
+- React
+- Github Actions
 - GCP
-- ???
-- ???
 
 ## Setup
 
@@ -30,7 +31,6 @@ This starts:
 
 - `app` on [http://localhost:8000](http://localhost:8000)
 - `database` on `localhost:5432`
-- `mailer` (Mailpit UI) on [http://localhost:8025](http://localhost:8025)
 
 ### Run tests locally
 
@@ -64,7 +64,7 @@ Workflow file: `.github/workflows/ci.yml`
 ## Troubleshooting
 
 - Port conflicts:
-  - change or free `8000`, `5432`, `1025`, `8025` before running compose.
+  - change or free `8000` and `5432` before running compose.
 - App container starts but vendor is missing:
   - rerun `docker compose ... up --build -d`, then `exec app composer install`.
 - Database-related errors:
