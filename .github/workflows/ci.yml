@@ -21,7 +21,7 @@ jobs:
         working-directory: orchestrator
     services:
       postgres:
-        image: postgres:16-alpine
+        image: pgvector/pgvector:pg16
         env:
           POSTGRES_DB: app
           POSTGRES_USER: app
@@ -35,8 +35,13 @@ jobs:
           --health-retries 5
     env:
       APP_ENV: test
-      APP_SECRET: ci-test-secret
+      APP_SECRET: ci-test-secret-must-be-at-least-32-characters
       DATABASE_URL: postgresql://app:pazzzu@127.0.0.1:5432/app?serverVersion=16&charset=utf8
+      JWT_SECRET: ci_jwt_secret_must_be_at_least_32_chars_long
+      JWT_TTL: "900"
+      REFRESH_TOKEN_TTL: "86400"
+      REFRESH_COOKIE_NAME: refresh_token
+      CORS_ALLOW_ORIGIN: "^https?://localhost(:[0-9]+)?$"
 
     steps:
       - name: Checkout
@@ -60,6 +65,12 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Run database migrations
+        run: php bin/console doctrine:migrations:migrate --no-interaction
+
+      - name: Messenger transports
+        run: php bin/console messenger:setup-transports --no-interaction
 
       - name: Run PHPUnit
         run: php vendor/bin/phpunit --configuration phpunit.dist.xml

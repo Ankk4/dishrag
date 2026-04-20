@@ -13,8 +13,6 @@
 .env.test.local
 .env.production.local
 
-!orchestrator/.env
-
 .DS_Store
 vendor/
 node_modules/
@@ -25,3 +23,4 @@ var/
 data/
 
 todo.md
+.cursor/plans/

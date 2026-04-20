@@ -14,7 +14,14 @@
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
+        <server name="KERNEL_CLASS" value="App\Kernel" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
+        <server name="APP_SECRET" value="test_secret_must_be_at_least_32_characters_long" force="true" />
+        <server name="JWT_SECRET" value="test_jwt_secret_must_be_at_least_32_chars_long" force="true" />
+        <server name="JWT_TTL" value="900" force="true" />
+        <server name="REFRESH_TOKEN_TTL" value="86400" force="true" />
+        <server name="REFRESH_COOKIE_NAME" value="refresh_token" force="true" />
+        <server name="CORS_ALLOW_ORIGIN" value="^https?://localhost(:[0-9]+)?$" force="true" />
     </php>
 
     <testsuites>

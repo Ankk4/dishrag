@@ -4,7 +4,7 @@
 - Symfony app is in `orchestrator/`
 - Local dev uses Docker Compose from repo root (see `README.md`)
 
-## Debugging (mandatory)
+## Debugging
 - Follow the 4-phase workflow in `.cursor/rules/debugging.md`
 - When a bug occurs in Docker/CI, debug in Docker/CI (avoid host-only “fixes”)
 - For Symfony bundle/autoload errors in Docker, validate `vendor/` inside the running container and suspect the named `vendor` volume early

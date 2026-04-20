@@ -7,6 +7,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.refresh_cookie_name: '%env(REFRESH_COOKIE_NAME)%'
 
 services:
     # default configuration for services in *this* file
@@ -18,6 +19,23 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
+
+    App\Security\JwtTokenService:
+        arguments:
+            $secret: '%env(JWT_SECRET)%'
+            $ttlSeconds: '%env(int:JWT_TTL)%'
+
+    App\Security\RefreshCookieAuthenticator:
+        arguments:
+            $cookieName: '%app.refresh_cookie_name%'
+
+    App\Infrastructure\Ai\GenerationClientInterface: '@App\Infrastructure\Ai\StubGenerationClient'
+
+    App\Infrastructure\Ai\EmbeddingClientInterface: '@App\Infrastructure\Ai\FakeEmbeddingClient'
+
+    App\Application\Auth\RefreshTokenService:
+        arguments:
+            $refreshTtlSeconds: '%env(int:REFRESH_TOKEN_TTL)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -18,5 +18,5 @@ framework:
             messenger.bus.default: []
 
         routing:
-            # Route your messages to the transports
-            # 'App\Message\YourMessage': async
+            App\Message\AssistantReplyMessage: async
+            App\Message\ProcessIngestionJobMessage: async

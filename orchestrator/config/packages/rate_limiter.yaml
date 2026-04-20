@@ -1,0 +1,10 @@
+framework:
+    rate_limiter:
+        auth_login:
+            policy: token_bucket
+            limit: 30
+            rate: { interval: '1 minute', amount: 10 }
+        chat_send:
+            policy: token_bucket
+            limit: 200
+            rate: { interval: '1 minute', amount: 40 }
